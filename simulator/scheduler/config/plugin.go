@@ -1,14 +1,30 @@
 package config
 
 import (
+	"context"
+
 	"golang.org/x/xerrors"
+	apiruntime "k8s.io/apimachinery/pkg/runtime"
 	configv1 "k8s.io/kube-scheduler/config/v1"
+	"k8s.io/kubernetes/pkg/scheduler/framework"
 	"k8s.io/kubernetes/pkg/scheduler/framework/plugins"
 	"k8s.io/kubernetes/pkg/scheduler/framework/runtime"
+	"sigs.k8s.io/scheduler-plugins/apis/config"
+	"sigs.k8s.io/scheduler-plugins/pkg/coscheduling"
 )
+
+var coschedulingNewWrapper = func(ctx context.Context, configuration apiruntime.Object, f framework.Handle) (framework.Plugin, error) {
+	var typedArg config.CoschedulingArgs
+	err := runtime.DecodeInto(configuration, &typedArg)
+	if err != nil {
+		return nil, xerrors.Errorf("decode configuration: %w", err)
+	}
+	return coscheduling.New(ctx, &typedArg, f)
+}
 
 var outOfTreeRegistries = runtime.Registry{
 	// TODO(user): add your plugins registries here.
+	coscheduling.Name: coschedulingNewWrapper,
 }
 
 // RegisteredMultiPointPluginNames returns all registered multipoint plugin names.

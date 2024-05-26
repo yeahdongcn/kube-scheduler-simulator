@@ -1,6 +1,7 @@
 package scheduler
 
 import (
+	"encoding/json"
 	"sort"
 	"testing"
 
@@ -9,7 +10,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	configv1 "k8s.io/kube-scheduler/config/v1"
+	frameworkruntime "k8s.io/kubernetes/pkg/scheduler/framework/runtime"
 	"k8s.io/utils/ptr"
+	pluginConfig "sigs.k8s.io/scheduler-plugins/apis/config"
 
 	schedConfig "sigs.k8s.io/kube-scheduler-simulator/simulator/scheduler/config"
 )
@@ -19,6 +22,52 @@ var (
 	weight2 int32 = 2
 	weight3 int32 = 3
 )
+
+func Test_CoschedulingArgs(t *testing.T) {
+	defaultschedulername := v1.DefaultSchedulerName
+	var permitWaitingTimeSeconds int64 = 10
+	var podGroupBackoffSeconds int64 = 3
+
+	versioned := &configv1.KubeSchedulerConfiguration{
+		Profiles: []configv1.KubeSchedulerProfile{
+			{
+				SchedulerName: &defaultschedulername,
+				Plugins:       &configv1.Plugins{},
+				PluginConfig: []configv1.PluginConfig{
+					{
+						Name: "Coscheduling",
+						Args: runtime.RawExtension{
+							Raw: func() []byte {
+								cfg := pluginConfig.CoschedulingArgs{
+									PermitWaitingTimeSeconds: permitWaitingTimeSeconds,
+									PodGroupBackoffSeconds:   podGroupBackoffSeconds,
+								}
+								d, _ := json.Marshal(cfg)
+								return d
+							}(),
+						},
+					},
+				},
+			},
+		},
+	}
+
+	internalCfg, err := ConvertSchedulerConfigToInternalConfig(versioned)
+	assert.NoError(t, err)
+	assert.NotNil(t, internalCfg)
+
+	args := internalCfg.Profiles[0].PluginConfig[0].Args
+	_, ok := args.(*pluginConfig.CoschedulingArgs)
+	assert.False(t, ok)
+
+	var typedArg pluginConfig.CoschedulingArgs
+	err = frameworkruntime.DecodeInto(args, &typedArg)
+	assert.NoError(t, err)
+
+	var obj runtime.Object = &typedArg
+	_, ok = obj.(*pluginConfig.CoschedulingArgs)
+	assert.True(t, ok)
+}
 
 //nolint:gocognit // For test case.
 func Test_convertConfigurationForSimulator(t *testing.T) {
