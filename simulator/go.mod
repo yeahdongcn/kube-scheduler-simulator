@@ -33,7 +33,7 @@ replace (
 	k8s.io/mount-utils => k8s.io/mount-utils v0.29.3
 	k8s.io/pod-security-admission => k8s.io/pod-security-admission v0.29.3
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.29.3
-	sigs.k8s.io/scheduler-plugins => sigs.k8s.io/scheduler-plugins v0.28.9-0.20240523234309-004e0d9de203
+	sigs.k8s.io/scheduler-plugins => github.com/yeahdongcn/scheduler-plugins v0.0.0-20240529110540-5a03274e4d6f
 )
 
 require (
@@ -115,6 +115,7 @@ require (
 	github.com/prometheus/client_model v0.4.0 // indirect
 	github.com/prometheus/common v0.44.0 // indirect
 	github.com/prometheus/procfs v0.10.1 // indirect
+	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stoewer/go-strcase v1.2.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
