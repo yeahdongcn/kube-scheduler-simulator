@@ -21,6 +21,7 @@ FROM alpine:3.14.0
 COPY --from=build-env /go/src/simulator/bin/simulator /simulator
 RUN chmod a+x /simulator
 COPY --from=build-env /go/src/simulator/config.yaml /config.yaml
+COPY ./cmd/simulator/topology.conf /etc/slurm-llnl/topology.conf
 
 EXPOSE 1212
 CMD ["/simulator"]
