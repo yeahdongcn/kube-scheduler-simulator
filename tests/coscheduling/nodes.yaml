@@ -1,0 +1,89 @@
+metadata:
+  name: tux0
+  labels: {}
+spec: {}
+status:
+  capacity:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  allocatable:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  phase: Running
+  conditions:
+    - type: Ready
+      status: 'True'
+---
+metadata:
+  name: tux4
+  labels: {}
+spec: {}
+status:
+  capacity:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  allocatable:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  phase: Running
+  conditions:
+    - type: Ready
+      status: 'True'
+---
+metadata:
+  name: tux5
+  labels: {}
+spec: {}
+status:
+  capacity:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  allocatable:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  phase: Running
+  conditions:
+    - type: Ready
+      status: 'True'
+---
+metadata:
+  name: tux6
+  labels: {}
+spec: {}
+status:
+  capacity:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  allocatable:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  phase: Running
+  conditions:
+    - type: Ready
+      status: 'True'
+---
+metadata:
+  name: tux7
+  labels: {}
+spec: {}
+status:
+  capacity:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  allocatable:
+    cpu: '4'
+    memory: 32Gi
+    pods: '110'
+  phase: Running
+  conditions:
+    - type: Ready
+      status: 'True'
